@@ -5,6 +5,7 @@ import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.sql.DataFrame;
 import org.apache.spark.sql.SQLContext;
+import org.apache.spark.sql.functions;
 
 import java.util.Map;
 
@@ -28,5 +29,14 @@ public class Main
 						
 		//Display all records in the dataframe having the CSV data
 		df.show();
+		
+		//Converts a string column to upper case
+		df.withColumn("name", functions.upper(df.col("name"))).show(); 
+		
+		//Converts a string column to lower case
+		df.withColumn("rate", functions.lower(df.col("rate"))).show();
+		
+		//Replace all string value that match with the given regexp by the specified string 
+		df.withColumn("rate", functions.regexp_replace(df.col("rate"), "(?:^|\\W)FOUR(?:$|\\W)", "NINE")).show();
 	}
 }
